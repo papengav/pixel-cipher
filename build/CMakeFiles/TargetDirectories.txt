@@ -1,0 +1,3 @@
+/home/papengav/repos/steg/build/CMakeFiles/pxc.dir
+/home/papengav/repos/steg/build/CMakeFiles/edit_cache.dir
+/home/papengav/repos/steg/build/CMakeFiles/rebuild_cache.dir
