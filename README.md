@@ -39,7 +39,6 @@ A CLI tool for encoding and decoding messages within images via LSB Steganograph
 ```sh
 pxc -e <input-image> -m <message-file> -o <output-image>
 ```
-*Tested `<message-file>` formats include `.txt` and `.bin`*
 
 *Exporting as `.jpg` will produce unexpected results since lossy compression skews message integrity*
 
@@ -51,12 +50,12 @@ pxc -d <input.image>
 ### Options
 Generic:
 * `--help` : Display help menu.
-* `-e, --encode-image` : Specify the input image for encoding.
-* `-d, --decode-image` : Specify the input image for decoding.
+* `-e | --encode-image` `<filepath>` : Specify the input image for encoding.
+* `-d | --decode-image` `<filepath>` : Specify the input image for decoding.
 
 Encoding:
-* `-m, --msg` : Specify the file containing data to encode.
-* `-o --output-file` : Specify the output image after encoding. If none is provided, input image will be overriden.
+* `-m | --msg` `<filepath.txt>` : Specify the file containing data to encode.
+* `-o | --output-file` `<filepath>` : Specify the output image after encoding. If none is provided, input image will be overriden.
 * `--upscale` : Allow image upscaing if message exceeds image capacity
 * `--encrypt` : Encrypt message contents before embedding.
 
