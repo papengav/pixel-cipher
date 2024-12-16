@@ -3,6 +3,8 @@
 #include <string>
 #include <bitset>
 
+#include <opencv2/imgproc.hpp>
+
 #include "pixelCipher.hpp"
 
 bool PixelCipher::getBinaryMsgFromFile(const std::string& msgFile, std::string* binaryMsg) {
@@ -40,11 +42,18 @@ std::string PixelCipher::binaryStringToText(const std::string& binary) {
     return text;
 }
 
-bool PixelCipher::encode(cv::Mat* img, const std::string& binaryMsg) {
-    int imgBitCapacity = img->total() * 3; // LSB for each Red, Green, Blue value for each pixel can be modified
-    if (binaryMsg.size() > imgBitCapacity) {
-  	    std::cout << "Failed to embed - message size (" << binaryMsg.size() << "-bits) is larger than image capacity (" << imgBitCapacity << "-bits)" << "\n";
+bool PixelCipher::encode(cv::Mat* img, const std::string& binaryMsg, bool allowUpscale) {
+    size_t requiredBits = binaryMsg.size() + 42;
+    size_t imgBitCapacity = img->total() * 3;
+    if (requiredBits > imgBitCapacity && !allowUpscale) {
+  	std::cout << "Failed to embed. Message size exceeds image capacity" << "\n";
         return false;
+    }
+    else if (requiredBits > imgBitCapacity) {
+        // minimum necessary upscale factor while avoiding fractional upscaing, and preserving aspect ratio
+	size_t scaleFactor = (requiredBits + imgBitCapacity - 1) / imgBitCapacity; // could this overflow if image or message is gigantic?
+	cv::Size newSize(img->cols * scaleFactor, img->rows * scaleFactor);
+        cv::resize(*img, *img, newSize, cv::INTER_CUBIC);	
     }
 
     std::string msgSizeBinary = std::bitset<42>(binaryMsg.size()).to_string();

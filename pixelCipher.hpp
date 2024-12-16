@@ -5,7 +5,7 @@
 class PixelCipher {
 public:
     bool getBinaryMsgFromFile(const std::string& msgFile, std::string* binaryMsg);
-    bool encode(cv::Mat* img, const std::string& binaryMsg);
+    bool encode(cv::Mat* img, const std::string& binaryMsg, bool allowUpscale);
     bool decode(cv::Mat& img, std::string* textMsg);
 
 private:

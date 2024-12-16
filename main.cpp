@@ -20,6 +20,7 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
 
     const std::string imgFile (varMap["encode-image"].as<std::string>());
     const std::string msgFile (varMap["msg"].as<std::string>());
+    bool upscale = varMap.count("upscale");
 
     // If output file specified, use that, otherwise replace input file.
     std::string outputFile = imgFile;
@@ -27,9 +28,6 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
         outputFile = varMap["output-file"].as<std::string>();
     }
 
-    if (varMap.count("upscale")) {
-        std::cout << "upscale option not yet implemented" << "\n";
-    }
     if (varMap.count("encrypt")) {
         std::cout << "encrypt option not yet implemented" << "\n";
     }
@@ -47,7 +45,7 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
         return;
     }
 
-    if (!pxc.encode(&embed, binaryMsg)) {
+    if (!pxc.encode(&embed, binaryMsg, upscale)) {
         return;
     }
 
