@@ -57,15 +57,15 @@ Encoding:
 * `-m | --msg` `<filepath.txt>` : Specify the file containing data to encode.
 * `-o | --output-file` `<filepath>` : Specify the output image after encoding. If none is provided, input image will be overriden.
 * `--upscale` : Allow image upscaing if message exceeds image capacity
-* `--encrypt` : Encrypt message contents before embedding.
+* `--encrypt` `<secret-txt>` : Encrypt message contents before embedding.
 
 Decoding:
-* `--decrypt` : Decrypt message contents after decoding
+* `--decrypt` `<secret-txt>` : Decrypt message contents after decoding
 
 ## Example
 ```sh
-pxc -e img.png -m secret.bin -o encoded.png --encrypt
-pxc -d encoded.png --decrypt
+pxc -e img.png -m msg.txt -o encoded.png --encrypt mySecret
+pxc -d encoded.png --decrypt mySecret
 ```
 
 ## Dependencies
