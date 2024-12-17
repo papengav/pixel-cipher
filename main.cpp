@@ -8,28 +8,25 @@
 #include <opencv2/imgcodecs.hpp>
 
 #include <iostream>
+#include <optional>
 
 #include "cliParser.hpp"
 #include "pixelCipher.hpp"
 
 void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
-    if (!varMap.count("msg")) {
-        std::cout << "msg option required" << "\n";
-        return;
-    }
-
     const std::string imgFile (varMap["encode-image"].as<std::string>());
     const std::string msgFile (varMap["msg"].as<std::string>());
     bool upscale = varMap.count("upscale");
+    std::optional<std::string> encryptKey;
+
+    if (varMap.count("encrypt")) {
+	encryptKey = varMap["encrypt"].as<std::string>();
+    }
 
     // If output file specified, use that, otherwise replace input file.
     std::string outputFile = imgFile;
     if (varMap.count("output-file")) {
         outputFile = varMap["output-file"].as<std::string>();
-    }
-
-    if (varMap.count("encrypt")) {
-        std::cout << "encrypt option not yet implemented" << "\n";
     }
 
     std::string binaryMsg;
@@ -45,7 +42,7 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
         return;
     }
 
-    if (!pxc.encode(&embed, binaryMsg, upscale)) {
+    if (!pxc.encode(&embed, binaryMsg, upscale, encryptKey)) {
         return;
     }
 
@@ -58,18 +55,19 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
 void handleDecode(const po::variables_map& varMap, PixelCipher& pxc) {
     const std::string imgFile(varMap["decode-image"].as<std::string>());
     cv::Mat embed = cv::imread(imgFile, cv::IMREAD_COLOR);
-
-    if (varMap.count("decrypt")) {
-        std::cout << "decrypt option not yet implemented" << "\n";
-    }
+    std::optional<std::string> decryptKey;
 
     if (embed.empty()) {
         std::cout << "Error reading image file" << "\n";
         return;
     }
 
+    if (varMap.count("decrypt")) {
+	decryptKey = varMap["decrypt"].as<std::string>();
+    }
+
     std::string txt;
-    if (!pxc.decode(embed, &txt)) {
+    if (!pxc.decode(embed, &txt, decryptKey)) {
         return;
     }
 
@@ -81,11 +79,11 @@ int main(int argc, char *argv[]) {
     PixelCipher pxc = PixelCipher();
 
     try {
-	    parser.parse(argc, argv);
+	parser.parse(argc, argv);
     }
     catch (const po::error& e) {
-	    std::cout << e.what() << "\n";
-	    return 1;
+	std::cout << e.what() << "\n";
+	return 1;
     }
 
     const auto& varMap = parser.getVarMap();
@@ -99,11 +97,11 @@ int main(int argc, char *argv[]) {
         handleEncode(varMap, pxc);
     }
     else if (varMap.count("decode-image") && !varMap.count("encode-image")) {
-	    handleDecode(varMap, pxc);
+	handleDecode(varMap, pxc);
     }
     else {
-	    std::cout << "Must use one of --encode or --decode" << "\n";
-	    return 1;
+	std::cout << "Must use one of --encode or --decode" << "\n";
+	return 1;
     }
 
     return 0;

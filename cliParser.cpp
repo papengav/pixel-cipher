@@ -19,15 +19,15 @@ void CliParser::parse(int argc, char* argv[]) {
      
     po::options_description encode("Encode Options");
     encode.add_options()
-	("msg,m", po::value<std::string>(), "txt file to embed into image")
+    ("msg,m", po::value<std::string>(), "txt file to embed into image")
     ("output-file,o", po::value<std::string>(), "name of file to produce with embedded data. Input file will be overwritten if ommitted")
     ("upscale", "attempt upscale if message exceeds image capacity")
-    ("encrypt", "encrypt message before embedding")
+    ("encrypt", po::value<std::string>(), "encrypt message with specified key before embedding")
     ;
     
     po::options_description decode("Decode Options");
     decode.add_options()
-	("decrypt", "decrypt message after extracting")
+	("decrypt", po::value<std::string>(), "decrypt message with specified key after extracting")
     ;
 
     m_visibleOptions.add(generic).add(encode).add(decode);
