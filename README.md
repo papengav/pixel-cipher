@@ -15,6 +15,7 @@ A CLI tool for encoding and decoding messages within images via LSB Steganograph
 ## Features
 - Encode messages into image files.
 - Decode hidden messages from image files.
+- Encrypt / Decrypt messages with simple XOR algorithm.
 - Simple command-line interface.
 - Supports color images in `.png` and `.bmp` formats.
 
