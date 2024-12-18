@@ -23,7 +23,7 @@ A CLI tool for encoding and decoding messages within images via LSB Steganograph
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/papengav/pixelcipher.git
+    git clone https://github.com/papengav/pixel-cipher.git
     cd pixelcipher
     ```
 
