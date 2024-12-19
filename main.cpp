@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 	handleDecode(varMap, pxc);
     }
     else {
-	std::cout << "Must use one of --encode or --decode" << "\n";
+	std::cout << parser.getGenericOptions() << "\n";
 	return 1;
     }
 
