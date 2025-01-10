@@ -56,7 +56,7 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
     return;
   }
 
-  cv::Mat embed = cv::imread(imgFile, cv::IMREAD_COLOR);
+  cv::Mat embed = cv::imread(imgFile, cv::IMREAD_UNCHANGED);
 
   if (embed.empty()) {
     std::cout << "Error reading image file" << "\n";
@@ -75,7 +75,7 @@ void handleEncode(const po::variables_map& varMap, PixelCipher& pxc) {
 
 void handleDecode(const po::variables_map& varMap, PixelCipher& pxc) {
   const std::string imgFile(varMap["decode-image"].as<std::string>());
-  cv::Mat embed = cv::imread(imgFile, cv::IMREAD_COLOR);
+  cv::Mat embed = cv::imread(imgFile, cv::IMREAD_UNCHANGED);
   std::optional<std::string> decryptKey;
 
   if (embed.empty()) {
