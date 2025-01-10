@@ -63,7 +63,7 @@ bool PixelCipher::handleUpscale(cv::Mat* img, const std::string& binaryMsg, bool
 	// minimum necessary upscale factor while avoiding fractional upscaing, and preserving aspect ratio
 	size_t scaleFactor = (requiredBits + imgBitCapacity - 1) / imgBitCapacity; // could this overflow if image or message is gingantic?
 	cv::Size newSize(img->cols * scaleFactor, img->rows * scaleFactor);
-	cv::resize(*img, *img, newSize, cv::INTER_CUBIC);
+	cv::resize(*img, *img, newSize, 0, 0, cv::INTER_CUBIC);
     }
 
     return true;
